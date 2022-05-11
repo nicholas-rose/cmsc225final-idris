@@ -14,7 +14,7 @@ Final project for CMSC 22500: Type Theory, exploring Idris
 
 | law | addition | multiplication |
 | - | :--: | :--: |
-| associative | X | X |
 | commutative | X | X |
+| associative | X | X |
 | distributive | N/A | X |
 
