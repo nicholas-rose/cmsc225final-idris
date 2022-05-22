@@ -81,6 +81,13 @@ addAssoc : (a : Nat) -> (b : Nat) -> (c : Nat) -> plus (plus a b) c = plus a (pl
 addAssoc Z b c = Refl
 addAssoc (S a) b c = CongS (addAssoc a b c)
 
+-- Test Cases
+nine : Nat
+nine = 9
+
+addAssocTest : Main.nine = Main.nine
+addAssocTest = addAssoc 2 3 4
+
 {-# 
   Associative property of multiplication
 #-}
