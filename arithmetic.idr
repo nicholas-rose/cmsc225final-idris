@@ -113,7 +113,7 @@ multZero Z = Refl
 multZero (S k) = multZero k
 
 --distributiveMultAdd: x*(y+z) = (x*y) + (x*z)
-disMultPlus : (x: Nat) -> (y: Nat) -> (z: Nat) -> (mult x (plus y z) = plus (mult x y) (mult x z)) 
+distMultPlus : (x: Nat) -> (y: Nat) -> (z: Nat) -> (mult x (plus y z) = plus (mult x y) (mult x z)) 
 distMultPlus Z _ _ = Refl 
 distMultPlus n Z m = rewrite (multZero n) in Refl
 distMultPlus x y Z = rewrite (addComm y Z) in 
