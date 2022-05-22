@@ -249,7 +249,7 @@ mulAssoc_Z = Refl
 
 -- a = S k inductive-case:
 mulAssoc_S : (k : Nat) -> (b : Nat) -> (c : Nat) -> plus (mult b c) (mult (mult k b) c) = mult (plus b (mult k b)) c
-mulAssoc_S k b c = rewrite distributiveAddMult b (mult k b) c in Refl
+mulAssoc_S k b c = rewrite distPlusMult b (mult k b) c in Refl
   -- the rewrite below allows the distributive property to complete the proof
   -- x = b, y = (mult k b), z = c
 
