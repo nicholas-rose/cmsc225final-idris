@@ -73,13 +73,13 @@ addCommIndTest = addCommInd 3 4
 #-}
 
 -- CongS
-CongS : {a : Nat} -> {b : Nat} -> (a = b) -> (S a = S b)
-CongS Refl = Refl
+congS : {a : Nat} -> {b : Nat} -> (a = b) -> (S a = S b)
+congS Refl = Refl
 
 -- addAssoc
 addAssoc : (a : Nat) -> (b : Nat) -> (c : Nat) -> plus (plus a b) c = plus a (plus b c)
 addAssoc Z b c = Refl
-addAssoc (S a) b c = CongS (addAssoc a b c)
+addAssoc (S a) b c = congS (addAssoc a b c)
 
 -- Test Cases
 nine : Nat
