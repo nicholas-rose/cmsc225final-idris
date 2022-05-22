@@ -184,9 +184,9 @@ distAddMultTest5 : Main.eight = Main.eight
 distAddMultTest5 = distributiveAddMult 1 1 4
 
 {-# 
-  Commutative property of multiplication
+  Commutative property of Multiplication
+  Nick Rose
 #-}
--- mulComm
 mulZero : (m : Nat) -> mult 0 m = 0
 mulZero m = Refl
 

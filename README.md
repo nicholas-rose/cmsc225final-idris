@@ -1,4 +1,4 @@
-# cmsc255final-idris
+# cmsc225final-idris
 Final project for CMSC 22500: Type Theory, exploring Idris
 
 ### Dependencies/Setup:
@@ -14,7 +14,7 @@ Final project for CMSC 22500: Type Theory, exploring Idris
 
 | law | addition | multiplication |
 | - | :--: | :--: |
-| commutative | X | X |
-| associative | X | X |
-| distributive | N/A | X |
+| commutative | Nico | Nick |
+| associative | Will | Avery |
+| distributive | N/A | Abby, Uday, Vivian, Kseniia |
 
