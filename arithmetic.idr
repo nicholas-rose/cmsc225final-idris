@@ -72,21 +72,57 @@ addCommIndTest = addCommInd 3 4
   Associative property of addition
 #-}
 -- addAssoc
+addAssoc : (a : Nat) -> (b : Nat) -> (c : Nat) -> plus a (plus b c) = plus (plus a b) c
 
 {-# 
   Commutative property of multiplication
 #-}
 -- mulComm
+-- x*y = (x-1)*y + x
+addZero : (m : Nat) -> m = plus m 0
+addZero Z = Refl -- 0 = 0
+addZero (S k) = let rec = addZero k in 
+    rewrite rec in Refl
+
+mulZero : (m : Nat) -> mult 0 m = 0
+mulZero m = Refl
+    
+mulOne : (m : Nat) -> mult m 1 = m
+mulOne Z = Refl
+mulOne (S k) = let rec = mulOne k in 
+    rewrite rec in Refl
+
+mulCommZero : (m : Nat) -> mult 0 m = mult m 0
+mulCommZero Z = Refl
+mulCommZero (S k) = let rec = mulCommZero k in 
+    rewrite rec in Refl
+
+
+
+mulCommInd : (k : Nat) -> (b : Nat) -> mult b (S k)  = plus b (mult k b) 
+mulCommInd Z b     = trans (mulOne b) (trans (addZero b) (cong (sym (mulZero b))))
+mulCommInd (S j) b = (cong {f=(plus b)} (mulCommInd j b))
+-- helpMulCommIndStep : 
+-- mult b (S (S j)) = plus b (plus b (mult j b))
+
+-- mult b (S j) = (plus b (mult j b)
+
+
+mulComm : (a : Nat) -> (b : Nat) -> mult a b = mult b a
+mulComm Z b         = mulCommZero b
+mulComm (S k) b = sym (mulCommInd k b) -- sym (mulCommInd k b)
 
 {-# 
   Associative property of multiplication
 #-}
 -- mulAssoc
+mulAssoc : (a : Nat) -> (b : Nat) -> (c : Nat) -> mult a (mult b c) = mult (mult a b) c
 
 {-# 
   Distributive property of multiplication
 #-}
 -- mulDist
+mulDist : (a : Nat) -> (b : Nat) -> (c : Nat) -> mult a (plus b c) = plus (mult a b) (mult a c)
 
 main : IO ()
 main = putStrLn "compiled successfully"
