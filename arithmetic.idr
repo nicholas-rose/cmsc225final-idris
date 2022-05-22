@@ -84,9 +84,108 @@ addCommIndTest = addCommInd 3 4
 -- mulAssoc
 
 {-# 
-  Distributive property of multiplication
+  Distributive property of multiplication:
+  Abby Herman, Uday Saharia, Vivian Wu, Kseniia Korotenko
 #-}
--- mulDist
+
+------------Symmetric Property of Equality----------
+symm : (a = b) -> (b = a)
+symm Refl = Refl
+
+------------addAssoc------------
+addAssoc : (a : Nat) -> (b : Nat) -> (c : Nat) -> ((a + b) + c = a + (b + c))
+addAssoc Z b c = Refl
+addAssoc (S k) b c = rewrite (addAssoc k b c) in Refl
+
+--Zero Property of Multiplication: n * 0 = 0
+multZero : (n : Nat) -> (mult n Z = Z)
+multZero Z = Refl
+multZero (S k) = multZero k
+
+--distributiveMultAdd: x*(y+z) = (x*y) + (x*z)
+distributiveMultAdd : (x: Nat) -> (y: Nat) -> (z: Nat) -> (mult x (plus y z) = plus (mult x y) (mult x z)) 
+distributiveMultAdd (S x) y z = rewrite (distributiveMultAdd x y z) in 
+                               (rewrite (symm (addAssoc (plus y z) (mult x y) (mult x z))) in 
+                               (rewrite (addComm y z) in 
+                               (rewrite (addAssoc z y (mult x y)) in 
+                               (rewrite (addComm z (plus y (mult x y))) in 
+                               (rewrite (addAssoc (plus y (mult x y)) z (mult x z)) in Refl)))))
+distributiveMultAdd Z _ _ = Refl 
+distributiveMultAdd n Z m = rewrite (multZero n) in Refl
+distributiveMultAdd x y Z = rewrite (addComm y Z) in 
+                           (rewrite (multZero x) in 
+                           (rewrite addComm (mult x y) Z in Refl))
+
+
+--distributiveAddMult: (a+b)*z = (a*c) + (b*c)  
+distributiveAddMult : (x : Nat) -> (y : Nat) -> (z : Nat) -> (mult (plus x y) z = plus (mult x z) (mult y z))
+distributiveAddMult (S x) y z = rewrite (distributiveAddMult x y z) in 
+                               (rewrite addAssoc z (mult x z) (mult y z) in Refl)
+distributiveAddMult Z _ _ = Refl		
+distributiveAddMult x Z z = rewrite (addComm x Z) in 
+                           (rewrite (addComm (mult x z) Z ) in Refl)
+distributiveAddMult x y Z = rewrite (multZero y) in 
+                           (rewrite (multZero (plus x y)) in 
+                           (rewrite (multZero x) in Refl))
+
+
+--******* Distributive Property Test Cases *********--
+zero : Nat
+zero = 0
+
+one : Nat
+one = 1
+
+two : Nat
+two = 2
+
+three : Nat
+three = 3
+
+four : Nat
+four = 4
+
+five : Nat
+five = 5
+
+six : Nat
+six = 6
+
+eight : Nat
+eight = 8
+
+
+--***Mult Add: a*(b+c) = (a*b) + (a*c)***
+distMultAddTest1 : Main.zero = Main.zero
+distMultAddTest1 = distributiveMultAdd 0 0 0
+
+distMultAddTest2 : Main.zero = Main.zero
+distMultAddTest2 = distributiveMultAdd 0 1 2
+
+distMultAddTest3 : Main.one = Main.one
+distMultAddTest3 = distributiveMultAdd 1 1 0
+
+distMultAddTest4 : Main.six = Main.six
+distMultAddTest4 = distributiveMultAdd 2 1 2
+
+distMultAddTest5 : Main.five = Main.five
+distMultAddTest5 = distributiveMultAdd 1 1 4
+
+--***Add Mult: (a+b)*c = (a*c) + (b*c)***
+distAddMultTest1 : Main.zero = Main.zero
+distAddMultTest1 = distributiveAddMult 0 0 0
+
+distAddMultTest2 : Main.two = Main.two
+distAddMultTest2 = distributiveAddMult 0 1 2
+
+distAddMultTest3 : Main.zero = Main.zero
+distAddMultTest3 = distributiveAddMult 1 1 0
+
+distAddMultTest4 : Main.six = Main.six
+distAddMultTest4 = distributiveAddMult 2 1 2
+
+distAddMultTest5 : Main.eight = Main.eight
+distAddMultTest5 = distributiveAddMult 1 1 4
 
 main : IO ()
 main = putStrLn "compiled successfully"
