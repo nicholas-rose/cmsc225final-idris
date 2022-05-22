@@ -71,7 +71,15 @@ addCommIndTest = addCommInd 3 4
 {-# 
   Associative property of addition
 #-}
+
+-- CongS
+CongS : {a : Nat} -> {b : Nat} -> (a = b) -> (S a = S b)
+CongS Refl = Refl
+
 -- addAssoc
+addAssoc : (a : Nat) -> (b : Nat) -> (c : Nat) -> plus (plus a b) c = plus a (plus b c)
+addAssoc Z b c = Refl
+addAssoc (S a) b c = CongS (addAssoc a b c)
 
 {-# 
   Associative property of multiplication
@@ -89,9 +97,9 @@ symm : (a = b) -> (b = a)
 symm Refl = Refl
 
 ------------addAssoc------------
-addAssoc : (a : Nat) -> (b : Nat) -> (c : Nat) -> ((a + b) + c = a + (b + c))
-addAssoc Z b c = Refl
-addAssoc (S k) b c = rewrite (addAssoc k b c) in Refl
+---addAssoc : (a : Nat) -> (b : Nat) -> (c : Nat) -> ((a + b) + c = a + (b + c))
+---addAssoc Z b c = Refl
+---addAssoc (S k) b c = rewrite (addAssoc k b c) in Refl
 
 --Zero Property of Multiplication: n * 0 = 0
 multZero : (n : Nat) -> (mult n Z = Z)
