@@ -108,29 +108,29 @@ multZero (S k) = multZero k
 
 --distributiveMultAdd: x*(y+z) = (x*y) + (x*z)
 distributiveMultAdd : (x: Nat) -> (y: Nat) -> (z: Nat) -> (mult x (plus y z) = plus (mult x y) (mult x z)) 
-distributiveMultAdd (S x) y z = rewrite (distributiveMultAdd x y z) in 
-                               (rewrite (symm (addAssoc (plus y z) (mult x y) (mult x z))) in 
-                               (rewrite (addComm y z) in 
-                               (rewrite (addAssoc z y (mult x y)) in 
-                               (rewrite (addComm z (plus y (mult x y))) in 
-                               (rewrite (addAssoc (plus y (mult x y)) z (mult x z)) in Refl)))))
 distributiveMultAdd Z _ _ = Refl 
 distributiveMultAdd n Z m = rewrite (multZero n) in Refl
 distributiveMultAdd x y Z = rewrite (addComm y Z) in 
                            (rewrite (multZero x) in 
                            (rewrite addComm (mult x y) Z in Refl))
+distributiveMultAdd (S x) y z = rewrite (distributiveMultAdd x y z) in 
+                            (rewrite (symm (addAssoc (plus y z) (mult x y) (mult x z))) in 
+                            (rewrite (addComm y z) in 
+                            (rewrite (addAssoc z y (mult x y)) in 
+                            (rewrite (addComm z (plus y (mult x y))) in 
+                            (rewrite (addAssoc (plus y (mult x y)) z (mult x z)) in Refl)))))
 
 
---distributiveAddMult: (a+b)*z = (a*c) + (b*c)  
+--distributiveAddMult: (x+y)*z = (x*z) + (y*z)  
 distributiveAddMult : (x : Nat) -> (y : Nat) -> (z : Nat) -> (mult (plus x y) z = plus (mult x z) (mult y z))
-distributiveAddMult (S x) y z = rewrite (distributiveAddMult x y z) in 
-                               (rewrite addAssoc z (mult x z) (mult y z) in Refl)
 distributiveAddMult Z _ _ = Refl		
 distributiveAddMult x Z z = rewrite (addComm x Z) in 
                            (rewrite (addComm (mult x z) Z ) in Refl)
 distributiveAddMult x y Z = rewrite (multZero y) in 
                            (rewrite (multZero (plus x y)) in 
                            (rewrite (multZero x) in Refl))
+distributiveAddMult (S x) y z = rewrite (distributiveAddMult x y z) in 
+                            (rewrite addAssoc z (mult x z) (mult y z) in Refl)
 
 
 --******* Distributive Property Test Cases *********--
