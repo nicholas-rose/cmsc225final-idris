@@ -113,13 +113,13 @@ multZero Z = Refl
 multZero (S k) = multZero k
 
 --distributiveMultAdd: x*(y+z) = (x*y) + (x*z)
-distributiveMultAdd : (x: Nat) -> (y: Nat) -> (z: Nat) -> (mult x (plus y z) = plus (mult x y) (mult x z)) 
-distributiveMultAdd Z _ _ = Refl 
-distributiveMultAdd n Z m = rewrite (multZero n) in Refl
-distributiveMultAdd x y Z = rewrite (addComm y Z) in 
+disMultPlus : (x: Nat) -> (y: Nat) -> (z: Nat) -> (mult x (plus y z) = plus (mult x y) (mult x z)) 
+distMultPlus Z _ _ = Refl 
+distMultPlus n Z m = rewrite (multZero n) in Refl
+distMultPlus x y Z = rewrite (addComm y Z) in 
                            (rewrite (multZero x) in 
                            (rewrite addComm (mult x y) Z in Refl))
-distributiveMultAdd (S x) y z = rewrite (distributiveMultAdd x y z) in 
+distMultPlus (S x) y z = rewrite (distMultPlus x y z) in 
                             (rewrite (symm (addAssoc (plus y z) (mult x y) (mult x z))) in 
                             (rewrite (addComm y z) in 
                             (rewrite (addAssoc z y (mult x y)) in 
@@ -128,14 +128,14 @@ distributiveMultAdd (S x) y z = rewrite (distributiveMultAdd x y z) in
 
 
 --distributiveAddMult: (x+y)*z = (x*z) + (y*z)  
-distributiveAddMult : (x : Nat) -> (y : Nat) -> (z : Nat) -> (mult (plus x y) z = plus (mult x z) (mult y z))
-distributiveAddMult Z _ _ = Refl		
-distributiveAddMult x Z z = rewrite (addComm x Z) in 
+distPlusMult : (x : Nat) -> (y : Nat) -> (z : Nat) -> (mult (plus x y) z = plus (mult x z) (mult y z))
+distPlusMult Z _ _ = Refl		
+distPlusMult x Z z = rewrite (addComm x Z) in 
                            (rewrite (addComm (mult x z) Z ) in Refl)
-distributiveAddMult x y Z = rewrite (multZero y) in 
+distPlusMult x y Z = rewrite (multZero y) in 
                            (rewrite (multZero (plus x y)) in 
                            (rewrite (multZero x) in Refl))
-distributiveAddMult (S x) y z = rewrite (distributiveAddMult x y z) in 
+distPlusMult (S x) y z = rewrite (distPlusMult x y z) in 
                             (rewrite addAssoc z (mult x z) (mult y z) in Refl)
 
 
@@ -166,36 +166,36 @@ eight = 8
 
 
 --***Mult Add: a*(b+c) = (a*b) + (a*c)***
-distMultAddTest1 : Main.zero = Main.zero
-distMultAddTest1 = distributiveMultAdd 0 0 0
+distMultPlusTest1 : Main.zero = Main.zero
+distMultPlusTest1 = distMultPlus 0 0 0
 
-distMultAddTest2 : Main.zero = Main.zero
-distMultAddTest2 = distributiveMultAdd 0 1 2
+distMultPlusTest2 : Main.zero = Main.zero
+distMultPlusTest2 = distMultPlus 0 1 2
 
-distMultAddTest3 : Main.one = Main.one
-distMultAddTest3 = distributiveMultAdd 1 1 0
+distMultPlusTest3 : Main.one = Main.one
+distMultPlusTest3 = distMultPlus 1 1 0
 
-distMultAddTest4 : Main.six = Main.six
-distMultAddTest4 = distributiveMultAdd 2 1 2
+distMultPlusTest4 : Main.six = Main.six
+distMultPlusTest4 = distMultPlus 2 1 2
 
-distMultAddTest5 : Main.five = Main.five
-distMultAddTest5 = distributiveMultAdd 1 1 4
+distMultPlusTest5 : Main.five = Main.five
+distMultPlusTest5 = distMultPlus 1 1 4
 
 --***Add Mult: (a+b)*c = (a*c) + (b*c)***
-distAddMultTest1 : Main.zero = Main.zero
-distAddMultTest1 = distributiveAddMult 0 0 0
+distPlusMultTest1 : Main.zero = Main.zero
+distPlusMultTest1 = distPlusMult 0 0 0
 
-distAddMultTest2 : Main.two = Main.two
-distAddMultTest2 = distributiveAddMult 0 1 2
+distPlusMultTest2 : Main.two = Main.two
+distPlusMultTest2 = distPlusMult 0 1 2
 
-distAddMultTest3 : Main.zero = Main.zero
-distAddMultTest3 = distributiveAddMult 1 1 0
+distPlusMultTest3 : Main.zero = Main.zero
+distPlusMultTest3 = distPlusMult 1 1 0
 
-distAddMultTest4 : Main.six = Main.six
-distAddMultTest4 = distributiveAddMult 2 1 2
+distPlusMultTest4 : Main.six = Main.six
+distPlusMultTest4 = distPlusMult 2 1 2
 
-distAddMultTest5 : Main.eight = Main.eight
-distAddMultTest5 = distributiveAddMult 1 1 4
+distPlusMultTest5 : Main.eight = Main.eight
+distPlusMultTest5 = distPlusMult 1 1 4
 
 {-# 
   Commutative property of Multiplication
@@ -224,7 +224,7 @@ mulComm a (S b') =
     (trans                                          -- mult a b = mult b a
         (trans                                          -- mult a (S b') = plus (mult a b') a
             (cong {f=(mult a)} (succPlusOne b'))            -- mult a (S b') = mult a (plus b' 1)
-            (distributiveMultAdd a b' 1))                   -- mult a (plus b' 1) = plus (mult a b') a
+            (distMultPlus a b' 1))                   -- mult a (plus b' 1) = plus (mult a b') a
         (trans                                          -- plus (mult a b') (mult a 1) = plus a (mult b' a)
             (cong {f=(plus (mult a b'))} (mulOne a))        -- plus (mult a b') (mult a 1) = plus (mult a b') a
             (trans                                          -- plus (mult a b') a = plus a (mult b' a)
