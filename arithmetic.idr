@@ -92,7 +92,6 @@ addAssocTest = addAssoc 2 3 4
   Associative property of multiplication
 #-}
 -- mulAssoc
-mulAssoc : (a : Nat) -> (b : Nat) -> (c : Nat) -> mult a (mult b c) = mult (mult a b) c
 
 {-# 
   Distributive property of multiplication:
@@ -238,6 +237,34 @@ mulCommTest1 = mulComm 0 1
 
 mulCommTest2 : Main.two * Main.four = Main.four * Main.two 
 mulCommTest2 = mulComm 2 4
+
+{-#
+  Associative property of Multiplication
+  Avery Kriegel
+#-}
+
+-- a = Z base-case: trivial 0 = 0
+mulAssoc_Z : Z = Z
+mulAssoc_Z = Refl
+
+-- a = S k inductive-case:
+mulAssoc_S : (k : Nat) -> (b : Nat) -> (c : Nat) -> plus (mult b c) (mult (mult k b) c) = mult (plus b (mult k b)) c
+mulAssoc_S k b c = rewrite distributiveAddMult b (mult k b) c in Refl
+  -- the rewrite below allows the distributive property to complete the proof
+  -- x = b, y = (mult k b), z = c
+
+mulAssoc : (a : Nat) -> (b : Nat) -> (c : Nat) -> mult a (mult b c) = mult (mult a b) c
+mulAssoc Z b c = mulAssoc_Z
+  -- invoke base-case proof
+mulAssoc (S k) b c = rewrite mulAssoc k b c in mulAssoc_S k b c
+  -- invoke inductive-case proof, rewriting mult (plus b (mult k b)) c = plus (mult b c) (mult (mult k b) c)
+
+-- mulAssoc Tests
+mulAssocTest1 : mult 2 (mult 3 4) = mult (mult 2 3) 4
+mulAssocTest1 = mulAssoc 2 3 4
+
+mulAssocTest2 : mult 5 (mult 0 5) = mult (mult 5 0) 5
+mulAssocTest2 = mulAssoc 5 0 5
 
 main : IO ()
 main = putStrLn "compiled successfully"
